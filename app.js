@@ -4,7 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var multer  = require('multer')
-var upload = multer({ dest: 'public/uploads/' })
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + '.jpg')
+  }
+})
+var upload = multer({ storage: storage })
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
