@@ -3,7 +3,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var multer  = require('multer')
+var upload = multer({ dest: 'public/uploads/' })
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -19,8 +20,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.post('/profile', upload.single('avatar'), function (req, res, next) {
+  // req.file is the `avatar` file
+  // req.body will hold the text fields, if there were any
+  file = req.file
+  console.log({file})
+  res.send({file})
+})
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
