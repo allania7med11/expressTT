@@ -28,12 +28,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/profile', upload.single('avatar'), function (req, res, next) {
+app.post('/profile', upload.single('people'), function (req, res, next) {
   // req.file is the `avatar` file
   // req.body will hold the text fields, if there were any
   file = req.file
+  file.path = file.path.substring(7)
   console.log({file})
-  res.send({file})
+  res.render('index', {file});
 })
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
